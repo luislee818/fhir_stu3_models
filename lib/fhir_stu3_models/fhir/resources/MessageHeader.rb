@@ -5,7 +5,7 @@ module FHIR
       include FHIR::STU3::Json
       include FHIR::STU3::Xml
 
-      SEARCH_PARAMS = ['author', 'code', 'destination', 'destination-uri', 'enterer', 'event', 'focus', 'receiver', 'response-id', 'responsible', 'sender', 'source', 'source-uri', 'target', 'timestamp']
+      SEARCH_PARAMS = ['author', 'code', 'data', 'destination', 'destination-uri', 'enterer', 'event', 'receiver', 'response-id', 'responsible', 'source', 'source-uri', 'target', 'timestamp']
       METADATA = {
         'id' => {'type'=>'id', 'path'=>'MessageHeader.id', 'min'=>0, 'max'=>1},
         'meta' => {'type'=>'Meta', 'path'=>'MessageHeader.meta', 'min'=>0, 'max'=>1},
@@ -18,7 +18,6 @@ module FHIR
         'event' => {'valid_codes'=>{'http://hl7.org/fhir/message-events'=>['CodeSystem-expand', 'MedicationAdministration-Complete', 'MedicationAdministration-Nullification', 'MedicationAdministration-Recording', 'MedicationAdministration-Update', 'admin-notify', 'communication-request', 'diagnosticreport-provide', 'observation-provide', 'patient-link', 'patient-unlink', 'valueset-expand']}, 'type'=>'Coding', 'path'=>'MessageHeader.event', 'min'=>1, 'max'=>1, 'binding'=>{'strength'=>'example', 'uri'=>'http://hl7.org/fhir/ValueSet/message-events'}},
         'destination' => {'type'=>'MessageHeader::Destination', 'path'=>'MessageHeader.destination', 'min'=>0, 'max'=>Float::INFINITY},
         'receiver' => {'type_profiles'=>['http://hl7.org/fhir/StructureDefinition/Practitioner', 'http://hl7.org/fhir/StructureDefinition/Organization'], 'type'=>'Reference', 'path'=>'MessageHeader.receiver', 'min'=>0, 'max'=>1},
-        'sender' => {'type_profiles'=>['http://hl7.org/fhir/StructureDefinition/Practitioner', 'http://hl7.org/fhir/StructureDefinition/Organization'], 'type'=>'Reference', 'path'=>'MessageHeader.sender', 'min'=>0, 'max'=>1},
         'timestamp' => {'type'=>'instant', 'path'=>'MessageHeader.timestamp', 'min'=>1, 'max'=>1},
         'enterer' => {'type_profiles'=>['http://hl7.org/fhir/StructureDefinition/Practitioner'], 'type'=>'Reference', 'path'=>'MessageHeader.enterer', 'min'=>0, 'max'=>1},
         'author' => {'type_profiles'=>['http://hl7.org/fhir/StructureDefinition/Practitioner'], 'type'=>'Reference', 'path'=>'MessageHeader.author', 'min'=>0, 'max'=>1},
@@ -26,7 +25,7 @@ module FHIR
         'responsible' => {'type_profiles'=>['http://hl7.org/fhir/StructureDefinition/Practitioner', 'http://hl7.org/fhir/StructureDefinition/Organization'], 'type'=>'Reference', 'path'=>'MessageHeader.responsible', 'min'=>0, 'max'=>1},
         'reason' => {'valid_codes'=>{'http://hl7.org/fhir/message-reasons-encounter'=>['admit', 'discharge', 'absent', 'return', 'moved', 'edit']}, 'type'=>'CodeableConcept', 'path'=>'MessageHeader.reason', 'min'=>0, 'max'=>1, 'binding'=>{'strength'=>'example', 'uri'=>'http://hl7.org/fhir/ValueSet/message-reason-encounter'}},
         'response' => {'type'=>'MessageHeader::Response', 'path'=>'MessageHeader.response', 'min'=>0, 'max'=>1},
-        'focus' => {'type_profiles'=>['http://hl7.org/fhir/StructureDefinition/Resource'], 'type'=>'Reference', 'path'=>'MessageHeader.focus', 'min'=>0, 'max'=>Float::INFINITY}
+        'data' => {'type_profiles'=>['http://hl7.org/fhir/StructureDefinition/Resource'], 'type'=>'Reference', 'path'=>'MessageHeader.data', 'min'=>0, 'max'=>Float::INFINITY}
       }
 
       class Destination < FHIR::STU3::Model
@@ -110,7 +109,6 @@ module FHIR
       attr_accessor :event             # 1-1 Coding
       attr_accessor :destination       # 0-* [ MessageHeader::Destination ]
       attr_accessor :receiver          # 0-1 Reference(Practitioner|Organization)
-      attr_accessor :sender            # 0-1 Reference(Practitioner|Organization)
       attr_accessor :timestamp         # 1-1 instant
       attr_accessor :enterer           # 0-1 Reference(Practitioner)
       attr_accessor :author            # 0-1 Reference(Practitioner)
@@ -118,7 +116,7 @@ module FHIR
       attr_accessor :responsible       # 0-1 Reference(Practitioner|Organization)
       attr_accessor :reason            # 0-1 CodeableConcept
       attr_accessor :response          # 0-1 MessageHeader::Response
-      attr_accessor :focus             # 0-* [ Reference(Resource) ]
+      attr_accessor :data              # 0-* [ Reference(Resource) ]
 
       def resourceType
         'MessageHeader'
