@@ -1,3 +1,5 @@
+require 'bigdecimal'
+
 module FHIR
   module Hashable
 
@@ -105,7 +107,7 @@ module FHIR
       elsif FHIR::PRIMITIVES.include?(meta['type'])
         primitive_meta = FHIR::PRIMITIVES[ meta['type'] ]
         if primitive_meta['type'] == 'number'
-          rval = BigDecimal.new(value.to_s)
+          rval = BigDecimal(value.to_s)
           if rval.frac==0
             rval = rval.to_i
           else
